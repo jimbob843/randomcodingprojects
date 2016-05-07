@@ -1,0 +1,86 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>VBA Crash Course - Advanced Arrays</title>
+</head>
+<body>
+    <h1>VBA Crash Course - Advanced Arrays</h1>
+
+<a href="http://randomcodingprojects.wordpress.com/2013/05/04/vba-crash-course-part-1">&lt;--- Back to part 1</a> 
+    
+    <p>This chapter introduces some more advanced concepts that are useful when working with arrays, such as dynamic allocation, sizing, copying, and using arrays as parameters.</p>
+    
+    <h2>Dynamic Arrays</h2>
+    
+    <p>It's possible to declare an empty array with no items, and then create the array later on using the <code style="font-weight:bold;font-size:13pt;">ReDim</code> keyword. You can <code style="font-weight:bold;font-size:13pt;">ReDim</code> an array created in this way as many times as you like. Each time you call <code style="font-weight:bold;font-size:13pt;">ReDim</code> the current array will be discarded and a new one created. Note that you cannot <code style="font-weight:bold;font-size:13pt;">ReDim</code> an array if it has been declared with a size to begin with. You can use both constants and variables to define the array size.</p>
+    <pre>
+    Dim a() as Single
+    ReDim a(9)               &lt;- Allocates an array of 10 items
+    
+    Dim itemcount As Integer
+    itemcount = 20
+    
+    ReDim a(itemcount)   &lt;- Replaces it with a new array of 21 items</pre>
+    
+    <!--more-->
+    
+    <p>If you wish to keep the contents of the array, but still change it's size, you can use the <code style="font-weight:bold;font-size:13pt;">Preserve</code> keyword to copy the current contents to the new array.</p>
+    <pre>
+    Dim a() As String
+    ReDim a(9)
+    a(0) = "First One"
+    ReDim Preserve a(99)</pre>
+    
+    <h2>Finding Array Sizes</h2>
+    
+    <p>There are two built-in functions for determining the size of an array. <code style="font-weight:bold;font-size:13pt;">LBound()</code> and <code style="font-weight:bold;font-size:13pt;">UBound()</code> will find the lowest possible array index and the highest, respectively. Eg:</p>
+    <pre>
+    Dim a(9) As Integer
+    Debug.Print LBound(a)       &lt;- Prints "0"
+    Debug.Print UBound(a)       &lt;- Prints "9"</pre>
+
+    <p>It's also possible to get the upper and lower bounds for multi-dimensional arrays by adding the dimension number to each function call: </p>
+    
+    <pre>
+    Dim grid(9,4) As Integer
+    Debug.Print UBound(grid, 1)    &lt;- Prints "9"
+    Debug.Print UBound(grid, 2)    &lt;- Prints "4"</pre>
+
+    <p>Note that the dimensions are indexed starting from 1, not 0, just to confuse.</p>
+
+
+    <h2>Arrays as Parameters</h2>
+    
+    <p>Arrays can also be used for parameters and return types:</p>
+        
+    <pre>
+    Public Function ReverseArray(a() As Integer) As Integer()
+        Dim b() As Integer
+        Dim i As Integer
+        
+        ReDim b(UBound(a))
+        
+        For i = UBound(a) To LBound(a) Step -1
+            b(i) = a(i)
+        Next
+        
+        ReverseArray = b
+    End Function</pre>
+    
+    <p>Note the use of brackets at the end of the return type indicating that an array is returned, but the array parameter has brackets after the parameter name instead.</p>
+    
+    <h2>Copying Arrays</h2>
+    
+    <p>Any assignment between array types makes a copy of the array.</p>
+    
+    <pre>
+    Dim a() As Integer
+    Dim b() As Integer
+    
+    a(0) = 1
+    b = a               &lt;- Makes b() a copy of a()
+    a(0) = 888
+    
+    Debug.Print b(0)    &lt;- Prints "1"</pre>
+        
+</body>
+</html>

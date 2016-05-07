@@ -1,0 +1,4 @@
+Some WordPress styling fragments.
+
+<code style="font-weight:bold;font-size:13pt;"></code>
+

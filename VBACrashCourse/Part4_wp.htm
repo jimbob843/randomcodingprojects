@@ -1,0 +1,91 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>VBA Crash Course - Loops</title>
+</head>
+<body>
+    <h1>VBA Crash Course - Loops</h1>
+
+<a href="http://randomcodingprojects.wordpress.com/2013/05/04/vba-crash-course-part-1">&lt;--- Back to part 1</a> 
+    
+    <p>Visual Basic supports <code style="font-weight:bold;font-size:13pt;">For</code> and <code style="font-weight:bold;font-size:13pt;">While</code> loops of various flavours. There are many ways to code the same loop, so I'll just present the most common here, and the rest are left as an exercise for the reader.</p>
+    
+    <h2>For-Next Loops</h2>
+    
+    <p>The <code style="font-weight:bold;font-size:13pt;">For-Next</code> loop is pretty standard.</p>
+    
+    <pre>
+    Dim i As Integer
+    
+    For i = 1 to 10
+        Debug.Print i
+    Next i</pre>
+
+    <!--more-->
+
+    <p>The variable reference after the <code style="font-weight:bold;font-size:13pt;">Next</code> keyword is actually optional, so it's usually omitted unless you wish to make it clear which <code style="font-weight:bold;font-size:13pt;">Next</code> corresponds with which <code style="font-weight:bold;font-size:13pt;">For</code> in nested loops:</p>
+    
+    <pre>
+    Dim x As Integer
+    Dim y As Integer
+    
+    For x = 1 to 10
+        For y = 1 to 10
+            Debug.Print x, y
+        Next y
+    Next x</pre>
+
+    <p>You can also specify that the loop increments in steps other than 1.</p>
+
+    <pre>
+    For i = 8 to 20 Step 3
+        Debug.Print i
+    Next</pre>
+    
+    <p>The above example prints the numbers: 8, 11, 14, 17, 20</p>
+    
+    <h2>For Each Loops</h2>
+    
+    <p>This is an alternate syntax for <code style="font-weight:bold;font-size:13pt;">For</code> loops that allows the code to iterate over all of the items in an array or collection. (See a later chapter for a discussion on collection objects.) The syntax is simpler than a normal <code style="font-weight:bold;font-size:13pt;">For</code> loop as there is no need to keep an index counter and obtain each item individually. Each iteration, the "item" variable is updated with the next item to process and the loop will terminate automatically when all items in the list have been processed.</p>
+    
+    <pre>
+    Dim arrNumbers(9) As Integer
+    arrNumbers(0) = 1
+    arrNumbers(1) = 2
+
+    Dim item As Variant
+    
+    For Each item in arrNumbers
+        Debug.Print "Item: " & item
+    Next</pre>
+    
+    <p>Note how the <code style="font-weight:bold;font-size:13pt;">item</code> variable must be either a <code style="font-weight:bold;font-size:13pt;">Variant</code> or a class type. Attempting to use an <code style="font-weight:bold;font-size:13pt;">Integer</code>, as would seem logical in this case, will generate a compiler error.</p>
+    
+    <h2>While-Wend Loops</h2>
+
+    <p>VB syntax for <code style="font-weight:bold;font-size:13pt;">While</code> loops is pretty much as you would expect, but the <code style="font-weight:bold;font-size:13pt;">Wend</code> keyword at the end is a little unusual.</p>
+    
+    <pre>
+    While i &lt; 10
+        i = i + 1
+    Wend</pre>
+    
+    <p>In the above example, the loop will proceed while <code style="font-weight:bold;font-size:13pt;">i</code> is less than 10. The test expression is evaluated at the beginning of each iteration. When the test returns <code style="font-weight:bold;font-size:13pt;">False</code> then the loop exits. If <code style="font-weight:bold;font-size:13pt;">i</code> is 10 or above before the loop starts then no iterations will be performed.</p>
+    
+    <h2>Do-Loop Loops</h2>
+    
+    <p>The following loops as similar to <code style="font-weight:bold;font-size:13pt;">While-Wend</code> loops, except that the test expression is evaluated at the end of each iteration. This causes the loop to execute at least once.</p>
+
+    <pre>
+    Do
+        i = i + 1
+    Loop While i &lt; 10
+    
+    Do
+        i = i + 1
+    Loop Until i &gt;= 10</pre>
+    
+    <p>The two statements above are equivalent, except that <code style="font-weight:bold;font-size:13pt;">While</code> statement proceeds while the expression returns <code style="font-weight:bold;font-size:13pt;">True</code> whereas the <code style="font-weight:bold;font-size:13pt;">Until</code> statement proceeds while the expression returns <code style="font-weight:bold;font-size:13pt;">False</code>.</p>
+
+
+</body>
+</html>

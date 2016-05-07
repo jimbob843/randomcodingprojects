@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>VBA Crash Course - Branches</title>
+</head>
+<body>
+    <h1>VBA Crash Course - Branches</h1>
+
+<a href="http://randomcodingprojects.wordpress.com/2013/05/04/vba-crash-course-part-1">&lt;--- Back to part 1</a> 
+   
+    <p>Visual Basic supports the usual range of program flow statements, including <code style="font-weight:bold;font-size:13pt;">If</code>, <code style="font-weight:bold;font-size:13pt;">For</code>, and <code style="font-weight:bold;font-size:13pt;">While</code>. This chapter covers the branch statements, and the next one covers loops.</p>
+    
+    <h2>If-Then-Else</h2>
+    
+    <p>The basic <code style="font-weight:bold;font-size:13pt;">If</code> statement is coded as follows:</p>
+    <pre>
+    If CustomerName = "Hughes" Then
+        Debug.Print "Customer: " & CustomerName
+    End If
+    
+    If i &lt;&gt; 1 Then
+        Debug.Print "i does not equal 1"
+    Else
+        Debug.Print "i equals 1"
+    End If</pre>
+    
+    <!--more-->
+        
+    <p>There is also a shortened <code style="font-weight:bold;font-size:13pt;">If</code> syntax for when there is only one statement to execute.</p>
+    
+    <pre>
+    If i = 0 Then i = 1</pre>  
+    
+    <p>The executed statement must be on the same line as the <code style="font-weight:bold;font-size:13pt;">If</code> keyword</p>  
+        
+    <h2>Select Case Statements</h2>
+
+    <p>When there are a large number of possibilities that you wish to test for, a series of <code style="font-weight:bold;font-size:13pt;">If</code> statements may be quite cumbersome, so VB provides a <code style="font-weight:bold;font-size:13pt;">Select Case</code> statement to use instead: (this is equivalent to <code style="font-weight:bold;font-size:13pt;">switch</code> in C++).</p>
+
+    <pre>
+    Select Case i
+    Case 1:
+        Debug.Print "One"
+    Case 2:
+        Debug.Print "Two"
+    Case Else:
+        Debug.Print "Some other number"
+    End Select</pre>    
+    
+</body>
+</html>

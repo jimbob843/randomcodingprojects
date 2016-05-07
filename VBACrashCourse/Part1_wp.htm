@@ -1,0 +1,177 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>VBA Crash Course - Variables</title>
+</head>
+<body>
+    <h1>VBA Crash Course - Variables</h1>
+    
+    <h2>Introduction</h2>
+
+    <p>This course is designed to cover the bare minimum of information required to program
+    in Visual Basic for Applications (VBA). The aim is to give the reader the fundamental
+    parts of the syntax, but without getting bogged down in any of the extraneous details
+    that aren't usually required. As a result, this course is not comprehensive, and won't be
+    much use to anyone that's never programmed before, but should be helpful to someone
+    that already programs in another language and just needs to translate to VB, or that
+    needs to revise their VB syntax. Much of what is presented is also true for Visual
+    Basic 6.0, but here we will have a greater focus on using VB to write Excel macros.</p>
+    
+    <h2>Data Types</h2>
+    
+    <p>Visual Basic supports a number of built-in data types. Here is a list of the most commonly used:</p>
+    
+    <table>
+        <tr>
+            <th>Type</th>
+            <th>Size</th>
+            <th style="width: 110px;">Min</th>
+            <th>Max</th>
+            <th>Default</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <td><code style="font-weight:bold;font-size:13pt;">Byte</code></td>
+            <td>8 bits</td>
+            <td>0</td>
+            <td>255</td>
+            <td>0</td>
+            <td>Unsigned integer</td>
+        </tr>
+        <tr>
+            <td><code style="font-weight:bold;font-size:13pt;">Integer</code></td>
+            <td>16 bits</td>
+            <td>-32768</td>
+            <td>32767</td>
+            <td>0</td>
+            <td>Signed integer</td>
+        </tr>
+        <tr>
+            <td><code style="font-weight:bold;font-size:13pt;">Long</code></td>
+            <td>32 bits</td>
+            <td>-2147483648</td>
+            <td>2147483647</td>
+            <td>0</td>
+            <td>Signed integer</td>
+        </tr>
+        <tr>
+            <td><code style="font-weight:bold;font-size:13pt;">Single</code></td>
+            <td>4 bytes</td>
+            <td>-3.4 x 10<sup>38</sup></td>
+            <td>3.4 x 10<sup>38</sup></td>
+            <td>0</td>
+            <td>Single precision floating point</td>
+        </tr>
+        <tr>
+            <td><code style="font-weight:bold;font-size:13pt;">Double</code></td>
+            <td>8 bytes</td>
+            <td>-1.79 x 10<sup>308</sup></td>
+            <td>1.79 x 10<sup>308</sup></td>
+            <td>0</td>
+            <td>Double precision floating point</td>
+        </tr>
+        <tr>
+            <td><code style="font-weight:bold;font-size:13pt;">Boolean</code></td>
+            <td>2 bytes</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td><code style="font-weight:bold;font-size:13pt;">False</code></td>
+            <td>Can be either <code style="font-weight:bold;font-size:13pt;">True</code> or <code style="font-weight:bold;font-size:13pt;">False</code> (note that <code style="font-weight:bold;font-size:13pt;">True = -1</code> in Visual Basic)</td>
+        </tr>
+        <tr>
+            <td><code style="font-weight:bold;font-size:13pt;">String</code></td>
+            <td>0 to 2<sup>31</sup> bytes</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td><code style="font-weight:bold;font-size:13pt;">""</code></td>
+            <td>String of Unicode characters (two bytes per character)</td>
+        </tr>
+    </table>
+
+    <p>There are also a number of other Visual Basic data types that are less commonly used, so you don't need to worry about these to begin with:</p>
+    
+    <table>
+        <tr>
+            <th>Type</th>
+            <th>Size</th>
+            <th>Min</th>
+            <th>Max</th>
+            <th>Default</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <td><code style="font-weight:bold;font-size:13pt;">Date</code></td>
+            <td>8 bytes</td>
+            <td>01 Jan 100 00:00:00</td>
+            <td>31 Dec 9999 23:59:59</td>
+            <td>30 Dec 1899 00:00:00</td>
+            <td>Represents a date and time</td>
+        </tr>
+        <tr>
+            <td><code style="font-weight:bold;font-size:13pt;">Currency</code></td>
+            <td>32 bits</td>
+            <td>-9 x 10<sup>14</sup></td>
+            <td>9 x 10<sup>14</sup></td>
+            <td>0.0000</td>
+            <td>Fixed point decimal value to 4 decimal points</td>
+        </tr>
+        <tr>
+            <td><code style="font-weight:bold;font-size:13pt;">Decimal</code></td>
+            <td>16 bits</td>
+            <td>-7 x 10<sup>28</sup></td>
+            <td>7 x 10<sup>28</sup></td>
+            <td>0</td>
+            <td>Fixed point decimal of 28 digits<br />Can only be stored in a <code style="font-weight:bold;font-size:13pt;">Variant</code></td>
+        </tr>
+        <tr>
+            <td><code style="font-weight:bold;font-size:13pt;">Object</code></td>
+            <td>4 bytes</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td><code style="font-weight:bold;font-size:13pt;">Nothing</code></td>
+            <td>Reference to a class of any type. Effectively a pointer similar to (void*)</td>
+        </tr>
+        <tr>
+            <td><code style="font-weight:bold;font-size:13pt;">Variant</code></td>
+            <td>8 bytes</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td><code style="font-weight:bold;font-size:13pt;">Empty</code></td>
+            <td>Can hold the value of any VB data type</td>
+        </tr>
+    </table>
+    
+    <h2>Variable Declarations</h2>
+    <p>Simple variables can be declared as follows. If the data type is ommitted it is assumed to be a <code style="font-weight:bold;font-size:13pt;">Variant</code>.</p>
+    <pre>    Dim i As Integer
+    Dim CustomerName As String
+    Dim MyVariant1</pre>
+    
+    <p>You will also see an alternate syntax where <code style="font-weight:bold;font-size:13pt;">Dim</code> is replaced with <code style="font-weight:bold;font-size:13pt;">Public</code> or <code style="font-weight:bold;font-size:13pt;">Private</code> when defining variables in a module or class. This behaves as you would expect, and declares whether or not the variable is accessible from outside the class (public) or not (private). eg:</p>
+    <pre>    Public MyPublicVar As Boolean
+    Private InternalCounter As Long</pre>
+    
+    <p>There's no way to initialise the variable when it's declared, as is normal in C++, so you tend to rely on the default values, which are guaranteed. In the following code the assignment to zero is redundant.</p>
+    <pre>    Dim count as Integer
+    count = 0</pre>
+    
+    <h2>Arrays</h2>
+    <p>Arrays are declared using brackets. Arrays are zero based, so the following code creates an array of 10 strings, numbered 0 to 9. Array contents are automatically initialised to the default value for the data type.</p>
+    <pre>    Dim names(9) As String
+    names(0) = "First Name"
+    names(9) = "Tenth Name"</pre>
+    
+    <p>You can also create two dimensional arrays.</p>
+    <pre>    Dim grid(9,9) as Long
+    grid(0,0) = 1
+    grid(9,9) = 100</pre>
+
+    <p>In practice, you can have as many dimensions as you have memory for.</p>
+    
+    <p>All arrays are bounds checked, so any invalid access will raise a run-time error.</p>
+    <pre>
+    Dim a(9) As Long
+    a(10) = 11          &lt;- Will error here</pre>
+     
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>VBA Crash Course - Procedures</title>
+</head>
+<body>
+    <h1>VBA Crash Course - Procedures</h1>
+    
+    <p>This chapter covers the use of simple procedures that contain the code that is executed. All code statements (other than module level variables) must be inside a procedure.</p>
+
+    <h2>Functions and Subroutines</h2>
+    
+    <p>In Visual Basic, functions and subroutines are effectively the same thing, except for one difference: a function returns a value, whereas a subroutine does not. The following examples both take two integer parameters, but the first prints to the debug output (in the immediate window) and the second returns the total.</p>
+    <pre>
+    Sub MySubroutine(input1 As Integer, input2 As Integer)
+        Dim total As Long
+        total = input1 + input2
+        Debug.Print "TOTAL: " & total
+    End Sub
+    
+    Function MyFunction(input1 As Integer, input2 As Integer) As Long
+        Dim total As Long
+        total = input1 + input2
+        MyFunction = total
+    End Function</pre>
+    
+    <p>Note the return data type at the end of the first line of <code style="font-weight:bold;font-size:13pt;">MyFunction</code>. The return value is set by assigning the required value to the function's name.</p>
+    
+    <p> Subroutines and functions can also take zero parameters and can be prefixed with <code style="font-weight:bold;font-size:13pt;">Public</code> or <code style="font-weight:bold;font-size:13pt;">Private</code> as required:</p>
+    <pre>
+    Public Sub DoSomething()
+    End Sub
+    
+    Private Function CalculateSomething() As Long
+        CalculateSomething = 999 + 1
+    End Function</pre>
+    
+    <h2>Calling Procedures</h2>
+    
+    <p>Subroutines are called by simply writing the name of the routine, followed by any parameters if they are required.</p>
+    
+    <pre>
+    Public Sub CallSubroutines()
+        
+        DoSomething
+        MySubroutine 20, 45
+        
+    End Sub</pre>
+    
+    <p>Functions are called in a similar way, but must always use brackets whether parameters are required or not.</p>
+    
+    <pre>
+    Public Sub CallFunctions()
+        
+        Dim result As Long
+        
+        result = CalculateSomething()
+        result = MyFunction(5, 26)
+        
+    End Sub</pre>
+    
+    <p>Note the difference in the use of brackets between subroutines and functions which is a common source of confusion when learning to program in VB.</p>
+        
+    <h2>Early Exit</h2>
+    
+    <p>If you wish to exit the procedure early, you can use the <code style="font-weight:bold;font-size:13pt;">Exit</code> keyword.</p>
+    <pre>
+    Public Function Divide(x As Integer, y As Integer) As Integer
+        If y = 0 Then
+            Divide = 0      &lt;- This is actually redundant
+            Exit Function
+        End If
+        
+        Divide = x / y
+    End Function
+    
+    Public Sub CheckedPrint(s As String)
+        If s = "" Then
+            Exit Sub
+        End If
+        
+        Debug.Print s
+    End Sub</pre>
+    
+    <p>Note how VB requires you to use <code style="font-weight:bold;font-size:13pt;">Exit Sub</code> or <code style="font-weight:bold;font-size:13pt;">Exit Function</code> as appropriate, and it'll complain if you get it wrong. A function will return the default value for it's returning data type if no return value is assigned in the code.</p>
+
+
+</body>
+</html>
