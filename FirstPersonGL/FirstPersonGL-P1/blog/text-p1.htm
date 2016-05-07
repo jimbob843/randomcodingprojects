@@ -1,0 +1,184 @@
+
+<h1>First Person Perspective in OpenTK - Part 1</h1>
+
+<p>
+This tutorial is designed to show you how to use the OpenTK library to produce a basic first person shooter style application. The OpenTK library is a free C# library that allows C# programs to use OpenGL function calls.
+</p>
+
+<p>
+First step is to download and install the OpenTK library. The download link can be found on the home page of the OpenTK website (<a href="http://www.opentk.com/">www.opentk.com</a>). Next job is to create a new Windows Application and delete the Form1.cs that is created by default. You'll then need to add a reference to the OpenTK library.
+</p>
+
+<img src="fp1-addref.png" />
+
+<p>
+Add a class called "MainWindow" and insert the following using statements at the top of the new class. We don't need all of these right away, but we'll add them now to make things easier later on.
+</p>
+
+<div style="margin-left:30px;border:1px solid black;background-color:#eeeeee;margin-bottom:12px;padding:4px;">
+<pre style="margin:0;padding:0;">
+using System.Drawing;
+using System.Windows.Forms;
+using OpenTK;
+using OpenTK.Input;
+using OpenTK.Graphics.OpenGL;
+</pre>
+</div>
+
+<p>
+There are two main ways to use the OpenTK library: one is to create a class which derives from the GameWindow class supplied in the library, the other is to use the GLControl user control. The former automatically creates a window and a rendering loop for you, so it is generally most useful for applications which constantly update such as the game engine we are creating here. Whereas the GL control is more suited to a CAD style application which lives on the surface of a normal Windows Form which only needs to update in response to user commands and may have several views active at once. I'll look at using the GL control in a future tutorial.
+</p>
+
+<p>
+So in this case our new class will be derived from the GameWindow class supplied in the OpenTK library, which will provide our application with its basic functionality.
+</p>
+
+<div style="margin-left:30px;border:1px solid black;background-color:#eeeeee;margin-bottom:12px;padding:4px;">
+<pre style="margin:0;padding:0;">
+namespace FirstPersonGL
+{
+    class MainWindow : GameWindow
+    {
+    }
+}
+</pre>
+</div>
+
+<p>
+Now we have a window we need to setup our 3D perspective view which we will then draw into. This needs to be recalculated whenever the window size changes, so overriding the OnResize method is the most logical place to put this code:
+</p>
+
+<div style="margin-left:30px;border:1px solid black;background-color:#eeeeee;margin-bottom:12px;padding:4px;">
+<pre style="margin:0;padding:0;">
+    //
+    // OnResize
+    //  - Game window sizing and 3D projection setup
+    //
+    protected override void OnResize(EventArgs e)
+    {
+        int w = Width;
+        int h = Height;
+        float aspect = 1;
+
+        // Calculate aspect ratio, checking for divide by zero
+        if (h > 0)
+        {
+            aspect = (float)w / (float)h;
+        }
+
+        // Initialise the projection view matrix
+        GL.MatrixMode(MatrixMode.Projection);
+        GL.LoadIdentity();
+
+        // Setup a perspective view
+        float FOVradians = MathHelper.DegreesToRadians(45);
+        Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(FOVradians, aspect, 1, 4000);
+        GL.MultMatrix(ref perspective);
+
+        // Set the viewport to the whole window
+        GL.Viewport(0, 0, w, h);
+    }
+</pre>
+</div>
+
+<p>
+This is doing a little bit of work and is central to how the user will see the 3D world, so let's take some time to explain what's going on.
+</p>
+
+<p> 
+This is analogous to the gluPerspective???? function if you have done some OpenGL coding before.
+</p>
+
+<img src="fp1-frustrum.png" />
+
+<p>
+Now we have a 3D projection setup we are ready to draw into the world. This is the job of the OnRenderFrame method which will be called repeatedly by the OpenTK library whenever it needs to redraw the 3D scene. Here we need to place everything we need to redraw the game world.
+</p>
+
+
+<div style="margin-left:30px;border:1px solid black;background-color:#eeeeee;margin-bottom:12px;padding:4px;">
+<pre style="margin:0;padding:0;">
+    //
+    // OnRenderFrame
+    //  - Draw a single 3D frame
+    //
+    protected override void OnRenderFrame(FrameEventArgs e)
+    {
+        // Clear the screen
+        GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+        // Initialise the model view matrix
+        GL.MatrixMode(MatrixMode.Modelview);
+        GL.LoadIdentity();
+
+        // Draw the scene
+        DrawScene();
+
+        // Display the new frame
+        SwapBuffers();
+    }
+</pre>
+</div>
+
+<p>
+The draw scene method just draws an orange square for now.
+</p>
+
+
+<div style="margin-left:30px;border:1px solid black;background-color:#eeeeee;margin-bottom:12px;padding:4px;">
+<pre style="margin:0;padding:0;">
+    //
+    // DrawScene
+    //  - Draws our game world
+    //
+    private void DrawScene()
+    {
+        GL.Color3(Color.Orange);
+
+        GL.Translate(50, 20, -200);
+
+        GL.Begin(BeginMode.Quads);
+        GL.Vertex3(0, 0, 0);
+        GL.Vertex3(20, 0, 0);
+        GL.Vertex3(20, 20, 0);
+        GL.Vertex3(0, 20, 0);
+        GL.End();
+    }
+</pre>
+</div>
+
+<p>
+We also need to update the Program class to use our new class rather than the form that we deleted. Replace the Main method with the following code:
+</p>
+
+
+<div style="margin-left:30px;border:1px solid black;background-color:#eeeeee;margin-bottom:12px;padding:4px;">
+<pre style="margin:0;padding:0;">
+    [STAThread]
+    static void Main()
+    {
+        using (MainWindow mw = new MainWindow())
+        {
+            mw.Run(50, 50);
+        }
+    }
+</pre>
+</div>
+
+<p>
+The program is now ready to run:
+</p>
+
+<img src="fp1-firstrun.png" />
+
+<p>
+We have a polygon on the screen! Not very exciting, but an important first step. Also notice how the window can be resized and the square will maintain the correct apect ratio, showing that our resize code is working nicely.
+</p>
+
+<p>
+We are now at the end of the first part of this tutorial, but before I go a warning about SwapBuffers(). While developing the code I noticed that if the call to  SwapBuffers() was left out, either deliberately or by accident, it would crash the display drivers when the example is run! The only way out is to hit the power switch. Nasty. So be really careful. DO NOT FORGET TO CALL SWAPBUFFERS().
+</p>
+
+<p>
+In the next part I'll improve on this code to perform some setup, add more objects to our scene and create a simple frames per second counter.
+</p>
